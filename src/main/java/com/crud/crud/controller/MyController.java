@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class MyController {
     @Autowired
     ServiceImpl service;
@@ -23,6 +24,7 @@ public class MyController {
         return ResponseEntity.ok(id.toString()+" Deleted");
     }
     @GetMapping("/all")
+    @CrossOrigin(origins = "http://localhost:4200/")
     public ResponseEntity<List<MyEntity>> show(){
         return ResponseEntity.ok(service.showAll());
     }
@@ -30,5 +32,9 @@ public class MyController {
     public ResponseEntity<String> update(@RequestBody MyEntity myEntity,@PathVariable Long id){
         service.update(myEntity,id);
         return ResponseEntity.ok(id.toString()+" Updated..");
+    }
+    @PutMapping("/one/{id}")
+    public ResponseEntity<MyEntity> one(@PathVariable Long id){
+        return ResponseEntity.ok(service.one(id));
     }
 }

@@ -38,4 +38,9 @@ public class ServiceImpl implements ServiceI{
             return "Not Found...";
         }
     }
+
+    @Override
+    public MyEntity one(Long id) {
+        return repo.findById(id).get();
+    }
 }

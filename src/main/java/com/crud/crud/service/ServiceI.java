@@ -9,4 +9,5 @@ public interface ServiceI {
     public List<MyEntity> showAll();
     public void deletr(Long id);
     public String update(MyEntity myEntity,Long id);
+    public MyEntity one (Long id);
 }
