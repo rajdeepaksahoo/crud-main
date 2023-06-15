@@ -7,7 +7,7 @@ import java.util.List;
 public interface ServiceI {
     public void add(MyEntity myEntity);
     public List<MyEntity> showAll();
-    public void deletr(Long id);
+    public boolean delete(Long id) ;
     public String update(MyEntity myEntity,Long id);
     public MyEntity one (Long id);
 }

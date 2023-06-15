@@ -9,38 +9,32 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceImpl implements ServiceI{
+public class ServiceImpl {
+    private final MyRepoI myEntityRepository;
+
+
     @Autowired
-    MyRepoI repo;
-    @Override
-    public void add(MyEntity myEntity) {
-        repo.save(myEntity);
+    public ServiceImpl(MyRepoI myEntityRepository) {
+        this.myEntityRepository = myEntityRepository;
     }
 
-    @Override
     public List<MyEntity> showAll() {
-        return repo.findAll();
+        return myEntityRepository.findAll();
     }
 
-    @Override
-    public void deletr(Long id) {
-        repo.deleteById(id);
+    public Optional<MyEntity> getById(Long id) {
+        return myEntityRepository.findById(id);
     }
 
-    @Override
-    public String update(MyEntity myEntity,Long id) {
-        Optional<MyEntity> opt =repo.findById(id);
-        if (opt.isPresent()){
-            repo.save(myEntity);
-            System.out.println(opt.get());
-            return "Updated..";
-        }else {
-            return "Not Found...";
-        }
+    public MyEntity add(MyEntity myEntity) {
+        return myEntityRepository.save(myEntity);
     }
 
-    @Override
-    public MyEntity one(Long id) {
-        return repo.findById(id).get();
+    public void delete(Long id) {
+        myEntityRepository.deleteById(id);
+    }
+
+    public void update(MyEntity myEntity) {
+        myEntityRepository.save(myEntity);
     }
 }
