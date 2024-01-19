@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceImpl {
+public class ServiceImpl implements  ServiceI{
     private final MyRepoI myEntityRepository;
 
 
@@ -22,7 +22,7 @@ public class ServiceImpl {
         return myEntityRepository.findAll();
     }
 
-    public Optional<MyEntity> getById(Long id) {
+    public Optional<MyEntity> one(Long id) {
         return myEntityRepository.findById(id);
     }
 
@@ -30,11 +30,21 @@ public class ServiceImpl {
         return myEntityRepository.save(myEntity);
     }
 
-    public void delete(Long id) {
-        myEntityRepository.deleteById(id);
+    public MyEntity delete(Long id) {
+        Optional<MyEntity> one = one(id);
+        if(one.isPresent()){
+            myEntityRepository.deleteById(id);
+            return one.get();
+        }
+        return new MyEntity();
     }
 
-    public void update(MyEntity myEntity) {
-        myEntityRepository.save(myEntity);
+    public MyEntity update(MyEntity myEntity) {
+        Optional<MyEntity> one = one(myEntity.getId());
+        if(one.isPresent()){
+            myEntityRepository.deleteById(myEntity.getId());
+            return one.get();
+        }
+        return new MyEntity();
     }
 }

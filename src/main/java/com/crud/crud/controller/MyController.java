@@ -30,22 +30,16 @@ public class MyController {
     }
     @GetMapping("/one/{id}")
     public ResponseEntity<MyEntity> one(@PathVariable Long id) {
-        MyEntity addedEntity = service.getById(id).get();
+        MyEntity addedEntity = service.one(id).get();
         return ResponseEntity.ok(addedEntity);
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String,HttpStatus>> delete(@PathVariable Long id) {
-        Optional<MyEntity> optionalEntity = service.getById(id);
-        Map<String,HttpStatus> map = new HashMap<>();
+    public ResponseEntity<MyEntity> delete(@PathVariable Long id) {
+        Optional<MyEntity> optionalEntity = service.one(id);
         if (optionalEntity.isPresent()) {
-            map.put(id+" Deleted...",HttpStatus.OK);
-            service.delete(id);
-            return ResponseEntity.ok(map);
-        } else {
-            map.put(id+" Not Found...",HttpStatus.NOT_FOUND);
-
-            return ResponseEntity.ok(map);
+            return new ResponseEntity<>(service.delete(id),HttpStatus.ACCEPTED);
         }
+            return new ResponseEntity<>(new MyEntity(),HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/all")
@@ -56,13 +50,6 @@ public class MyController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<MyEntity> update(@RequestBody MyEntity myEntity, @PathVariable Long id) {
-        Optional<MyEntity> optionalEntity = service.getById(id);
-
-        if (optionalEntity.isPresent()) {
-            myEntity.setId(id);
-            service.update(myEntity);
-            return ResponseEntity.ok(optionalEntity.get());
-        }
-        return null;
+       return new ResponseEntity<>(service.update(myEntity),HttpStatus.CREATED);
     }
 }
